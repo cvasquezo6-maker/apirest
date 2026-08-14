@@ -3,7 +3,7 @@ const { canTreatArrayAsAnd } = require("sequelize/lib/utils");
 module.exports = (sequelize, Sequelize) => {
  
     const Mcatalogo = sequelize.define("mcatalogo", {
-         nombre: {
+        nombre: {
             type: Sequelize.STRING
         },
         descripcion: {
@@ -30,4 +30,4 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
     return Mcatalogo;
-};
+}; 

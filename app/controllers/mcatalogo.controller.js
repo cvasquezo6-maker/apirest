@@ -1,27 +1,33 @@
- const db = require("../models");
+// importamos db los modelos en este caso si tenemos uno o mas, se puede referenciar db."nombreModelo".   
+const db = require("../models");
 const Mcatalogo = db.mcatalogo;
 const Op = db.Sequelize.Op;
 
+// Create and Save a new Client
 exports.create = (req, res) => {
-    if (!req.body.carnet) {
+    // Validamos que dentro del  request no venga vacio el nombre, de lo contrario returna error
+    if (!req.body.nombre) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
 
-    const mcatalogo = { 
+    // Create a Client, definiendo una variable con la estructura del reques para luego solo ser enviada como parametro mas adelante. 
+    const mcatalogo = {
         nombre: req.body.nombre,
-        cancion: req.body.cancion,
-        descripcion: req.body.descripcion, 
-        artista: req.body.artista,
-        extencion: req.body.extencion,
+        descripcion: req.body.descripcion,
+        artista: req.body.artista, 
+        duracion: req.body.duracion,
+        extension: req.body.extension,
         album: req.body.album,
         anio: req.body.anio,
-        carnet: req.body.carnet
+        carnet: req.body.carnet,
+        // utilizando ? nos ayuda a indicar que el paramatro puede ser opcional dado que si no viene, le podemos asignar un valor default
+        
     };
 
-    
+    // Save a new Client into the database
     Mcatalogo.create(mcatalogo)
         .then(data => {
             res.send(data);
@@ -34,6 +40,7 @@ exports.create = (req, res) => {
         });
 };
 
+// Retrieve all Client from the database.
 exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
     var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
@@ -50,7 +57,7 @@ exports.findAll = (req, res) => {
         });
 };
 
-
+// Find a single Tutorial with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -60,7 +67,7 @@ exports.findOne = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Cliente with id=" + id
+                message: "Error retrieving Mcatalogo with id=" + id
             });
         });
 };
@@ -75,17 +82,17 @@ exports.update = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Cliente was updated successfully."
+                    message: "Mcatalogo was updated successfully."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Client with id=${id}. Maybe Client was not found or req.body is empty!`
+                    message: `Cannot update Mcatalogo with id=${id}. Maybe Mcatalogo was not found or req.body is empty!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Client with id=" + id
+                message: "Error updating Mcatalogo with id=" + id
             });
         });
 };
@@ -100,11 +107,11 @@ exports.delete = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Client was deleted successfully!"
+                    message: "Mcatalogo was deleted successfully!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Client with id=${id}. El cliente no fue encontado!`
+                    message: `Cannot delete Mcatalogo with id=${id}. El Mcatalogo no fue encontado!`
                 });
             }
         })
@@ -122,12 +129,12 @@ exports.deleteAll = (req, res) => {
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} Clients were deleted successfully!` });
+            res.send({ message: `${nums} Mcatalogo were deleted successfully!` });
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all clients."
+                    err.message || "Some error occurred while removing all Mcatalogo."
             });
         });
 };
@@ -141,7 +148,7 @@ exports.findAllStatus = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Client."
+                    err.message || "Some error occurred while retrieving Mcatalogo."
             });
         }); 
 };

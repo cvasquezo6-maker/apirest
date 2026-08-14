@@ -24,5 +24,9 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.mcatalogo = require("./mcatalogo.model.js")(sequelize, Sequelize);
+db.mcatalogo = require("./mcatalogo.models.js")(sequelize, Sequelize);
+
+console.log("MODELOS:", Object.keys(db));
+console.log("MCATALOGO:", db.mcatalogo);
+
 module.exports = db;
